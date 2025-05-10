@@ -20,8 +20,6 @@ class Item(db.Model):
     def __repr__(self):
         return f'<Item {self.name}>'
 
-db.create_all()
-
 @app.route('/')
 def hello():
     return "Hello from Flask!"
@@ -40,4 +38,7 @@ def add_item():
     return jsonify(str(item)), 201
 
 if __name__ == '__main__':
+    # アプリケーションコンテキスト内で create_all を呼ぶ
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
