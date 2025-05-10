@@ -2,7 +2,11 @@
 import { useState, useEffect } from "react";
 
 export default function Home() {
-  const [items, setItems] = useState([]);
+  type Item = {
+    name: string;
+  };
+
+  const [items, setItems] = useState<Item[]>([]);
   const [newItem, setNewItem] = useState("");
 
   useEffect(() => {
@@ -34,7 +38,7 @@ export default function Home() {
       <h1>Next.js + Flask + SQLite</h1>
       <ul>
         {items.map((item, index) => (
-          <li key={index}>{item}</li>
+          <li key={index}>{item.name}</li>
         ))}
       </ul>
       <input
