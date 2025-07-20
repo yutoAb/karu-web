@@ -1,5 +1,6 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import useSWR from "swr";
 import {
   Stack,
   Box,
@@ -10,34 +11,35 @@ import {
   ListItem,
   ListSubheader,
 } from "@mui/material";
+import { fetcher } from "../../hooks/fetcher";
 
 export default function Home() {
-  const [items, setItems] = useState<string[]>([]);
   const [newItem, setNewItem] = useState("");
 
-  useEffect(() => {
-    fetchItems();
-  }, []);
+  const {
+    data: items,
+    mutate,
+    isLoading,
+    error,
+  } = useSWR<string[]>("http://localhost:5000/items", fetcher);
 
-  const fetchItems = async () => {
-    const res = await fetch("http://localhost:5000/items");
-    const data = await res.json();
-    setItems(data);
-  };
+  console.log(items);
 
   const addItem = async () => {
     if (!newItem) return;
-    const res = await fetch("http://localhost:5000/items", {
+    await fetch("http://localhost:5000/items", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ name: newItem }),
     });
-    const data = await res.json();
-    setItems([...items, data]);
     setNewItem("");
+    mutate();
   };
+
+  if (isLoading) return <Typography>読み込み中...</Typography>;
+  if (error) return <Typography>エラーが発生しました。</Typography>;
 
   return (
     <Box
@@ -61,7 +63,7 @@ export default function Home() {
             </ListSubheader>
           }
         >
-          {items.map((item, index) => (
+          {items?.map((item, index) => (
             <ListItem key={index}>{item}</ListItem>
           ))}
         </List>
@@ -69,6 +71,7 @@ export default function Home() {
           <TextField
             id="outlined-controlled"
             label="追加したいToDo"
+            value={newItem}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               setNewItem(event.target.value);
             }}
