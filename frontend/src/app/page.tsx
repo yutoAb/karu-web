@@ -39,6 +39,13 @@ export default function Home() {
     mutate();
   };
 
+  const deleteItem = async (itemToDelete: string) => {
+    await fetch(`http://localhost:5000/items/${itemToDelete}`, {
+      method: "DELETE",
+    });
+    mutate();
+  };
+
   if (isLoading) return <Typography>読み込み中...</Typography>;
   if (error) return <Typography>エラーが発生しました。</Typography>;
 
@@ -68,7 +75,11 @@ export default function Home() {
             <ListItem
               key={index}
               secondaryAction={
-                <IconButton edge="end" aria-label="delete">
+                <IconButton
+                  edge="end"
+                  aria-label="delete"
+                  onClick={() => deleteItem(item)}
+                >
                   <DeleteIcon />
                 </IconButton>
               }
