@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { fetcher } from "../../hooks/fetcher";
 
 type Item = {
@@ -100,13 +101,13 @@ export default function Home() {
               secondaryAction={
                 <Stack direction="row" spacing={1}>
                   {editItem?.id === item.id ? (
-                    <Button
-                      variant="contained"
-                      size="small"
+                    <IconButton
+                      edge="end"
+                      aria-label="confirm"
                       onClick={updateItem}
                     >
-                      保存
-                    </Button>
+                      <CheckCircleIcon />
+                    </IconButton>
                   ) : (
                     <IconButton
                       edge="end"
@@ -133,6 +134,7 @@ export default function Home() {
                 <TextField
                   fullWidth
                   value={editText}
+                  size="small"
                   onChange={(e) => setEditText(e.target.value)}
                 />
               ) : (
