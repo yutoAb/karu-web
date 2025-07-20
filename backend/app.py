@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 import json
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, instance_path='/tmp')
 CORS(app)
 
 db_path = os.path.join(app.instance_path, 'my_database.db')
@@ -63,8 +63,6 @@ def update_item(item_id):
     db.session.commit()
     return jsonify(item.to_dict()), 200
 
-if __name__ == '__main__':
-    # アプリケーションコンテキスト内で create_all を呼ぶ
-    with app.app_context():
-        db.create_all()
-    app.run(debug=True)
+with app.app_context():
+    os.makedirs(app.instance_path, exist_ok=True)
+    db.create_all()
