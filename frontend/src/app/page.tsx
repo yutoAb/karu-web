@@ -16,6 +16,11 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import { fetcher } from "../../hooks/fetcher";
 
+type Item = {
+  id: number;
+  name: string;
+};
+
 export default function Home() {
   const [newItem, setNewItem] = useState("");
 
@@ -24,7 +29,7 @@ export default function Home() {
     mutate,
     isLoading,
     error,
-  } = useSWR<string[]>("http://localhost:5000/items", fetcher);
+  } = useSWR<Item[]>("http://localhost:5000/items", fetcher);
 
   const addItem = async () => {
     if (!newItem) return;
@@ -39,8 +44,8 @@ export default function Home() {
     mutate();
   };
 
-  const deleteItem = async (itemToDelete: string) => {
-    await fetch(`http://localhost:5000/items/${itemToDelete}`, {
+  const deleteItem = async (id: number) => {
+    await fetch(`http://localhost:5000/items/${id}`, {
       method: "DELETE",
     });
     mutate();
@@ -78,13 +83,13 @@ export default function Home() {
                 <IconButton
                   edge="end"
                   aria-label="delete"
-                  onClick={() => deleteItem(item)}
+                  onClick={() => deleteItem(item.id)}
                 >
                   <DeleteIcon />
                 </IconButton>
               }
             >
-              <ListItemText primary={item} />
+              <ListItemText primary={item.name} />
             </ListItem>
           ))}
         </List>

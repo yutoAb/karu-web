@@ -31,11 +31,7 @@ def hello():
 @app.route('/items', methods=['GET'])
 def get_items():
     items = Item.query.all()
-    names = [item.name for item in items]
-    return app.response_class(
-        response=json.dumps(names, ensure_ascii=False),
-        mimetype='application/json'
-    )
+    return jsonify([item.to_dict() for item in items])
 
 @app.route('/items', methods=['POST'])
 def add_item():
@@ -43,11 +39,11 @@ def add_item():
     item = Item(name=name)
     db.session.add(item)
     db.session.commit()
-    return jsonify(str(item)), 201
+    return jsonify(item.to_dict()), 201
 
-@app.route('/items/<name>', methods=['DELETE'])
-def delete_item(name):
-    item = Item.query.filter_by(name=name).first()
+@app.route('/items/<int:item_id>', methods=['DELETE'])
+def delete_item(item_id):
+    item = Item.query.get(item_id)
     if item:
         db.session.delete(item)
         db.session.commit()
