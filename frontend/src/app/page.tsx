@@ -23,6 +23,8 @@ type Item = {
   name: string;
 };
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 export default function Home() {
   const [newItem, setNewItem] = useState("");
 
@@ -31,11 +33,11 @@ export default function Home() {
     mutate,
     isLoading,
     error,
-  } = useSWR<Item[]>("http://localhost:5000/items", fetcher);
+  } = useSWR<Item[]>(`${API_BASE_URL}/items`, fetcher);
 
   const addItem = async () => {
     if (!newItem) return;
-    await fetch("http://localhost:5000/items", {
+    await fetch(`${API_BASE_URL}/items`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -47,7 +49,7 @@ export default function Home() {
   };
 
   const deleteItem = async (id: number) => {
-    await fetch(`http://localhost:5000/items/${id}`, {
+    await fetch(`${API_BASE_URL}/items/${id}`, {
       method: "DELETE",
     });
     mutate();
@@ -58,7 +60,7 @@ export default function Home() {
 
   const updateItem = async () => {
     if (!editItem) return;
-    await fetch(`http://localhost:5000/items/${editItem.id}`, {
+    await fetch(`${API_BASE_URL}/items/${editItem.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
