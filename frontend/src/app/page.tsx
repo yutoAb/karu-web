@@ -12,10 +12,6 @@ import {
 } from "@mui/material";
 
 export default function Home() {
-  // type Item = {
-  //   name: string;
-  // };
-
   const [items, setItems] = useState<string[]>([]);
   const [newItem, setNewItem] = useState("");
 
