@@ -52,6 +52,23 @@ export default function Home() {
     mutate();
   };
 
+  const [editItem, setEditItem] = useState<Item | null>(null);
+  const [editText, setEditText] = useState("");
+
+  const updateItem = async () => {
+    if (!editItem) return;
+    await fetch(`http://localhost:5000/items/${editItem.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name: editText }),
+    });
+    setEditItem(null);
+    setEditText("");
+    mutate();
+  };
+
   if (isLoading) return <Typography>読み込み中...</Typography>;
   if (error) return <Typography>エラーが発生しました。</Typography>;
 
@@ -82,15 +99,26 @@ export default function Home() {
               key={index}
               secondaryAction={
                 <Stack direction="row" spacing={1}>
-                  <IconButton
-                    edge="end"
-                    aria-label="edit"
-                    onClick={() => {
-                      console.log(`編集: ${item.name}`);
-                    }}
-                  >
-                    <EditIcon />
-                  </IconButton>
+                  {editItem?.id === item.id ? (
+                    <Button
+                      variant="contained"
+                      size="small"
+                      onClick={updateItem}
+                    >
+                      保存
+                    </Button>
+                  ) : (
+                    <IconButton
+                      edge="end"
+                      aria-label="edit"
+                      onClick={() => {
+                        setEditItem(item);
+                        setEditText(item.name);
+                      }}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  )}
                   <IconButton
                     edge="end"
                     aria-label="delete"
@@ -101,7 +129,15 @@ export default function Home() {
                 </Stack>
               }
             >
-              <ListItemText primary={item.name} />
+              {editItem?.id === item.id ? (
+                <TextField
+                  fullWidth
+                  value={editText}
+                  onChange={(e) => setEditText(e.target.value)}
+                />
+              ) : (
+                <ListItemText primary={item.name} />
+              )}
             </ListItem>
           ))}
         </List>

@@ -50,6 +50,17 @@ def delete_item(item_id):
         return jsonify({"message": "Deleted"}), 200
     return jsonify({"message": "Item not found"}), 404
 
+@app.route('/items/<int:item_id>', methods=['PUT'])
+def update_item(item_id):
+    item = Item.query.get(item_id)
+    if item is None:
+        return jsonify({"message": "Item not found"}), 404
+
+    data = request.get_json()
+    item.name = data.get("name", item.name)
+    db.session.commit()
+    return jsonify(item.to_dict()), 200
+
 if __name__ == '__main__':
     # アプリケーションコンテキスト内で create_all を呼ぶ
     with app.app_context():
