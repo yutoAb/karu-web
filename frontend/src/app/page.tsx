@@ -1,12 +1,15 @@
 "use client";
 import { useState, useEffect } from "react";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListSubheader from '@mui/material/ListSubheader';
+import {
+  Stack,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  List,
+  ListItem,
+  ListSubheader,
+} from "@mui/material";
 
 export default function Home() {
   // type Item = {
@@ -62,20 +65,22 @@ export default function Home() {
             </ListSubheader>
           }
         >
-            {items.map((item, index) => (
-              <ListItem  key={index}>{item}</ListItem >
-            ))}
+          {items.map((item, index) => (
+            <ListItem key={index}>{item}</ListItem>
+          ))}
         </List>
-        <TextField
-          id="outlined-controlled"
-          label="追加したいToDo"
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            setNewItem(event.target.value);
-          }}
-        />
-        <Button variant="outlined" onClick={addItem}>
-          To Do追加
-        </Button>
+        <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
+          <TextField
+            id="outlined-controlled"
+            label="追加したいToDo"
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              setNewItem(event.target.value);
+            }}
+          />
+          <Button variant="outlined" onClick={addItem}>
+            To Do追加
+          </Button>
+        </Stack>
       </Box>
     </Box>
   );
