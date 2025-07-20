@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
+import json
 
 app = Flask(__name__)
 CORS(app)
@@ -19,6 +20,9 @@ class Item(db.Model):
 
     def __repr__(self):
         return f'<Item {self.name}>'
+    
+    def to_dict(self):
+        return {"id": self.id, "name": self.name}
 
 @app.route('/')
 def hello():
@@ -27,7 +31,11 @@ def hello():
 @app.route('/items', methods=['GET'])
 def get_items():
     items = Item.query.all()
-    return jsonify([str(item) for item in items])
+    names = [item.name for item in items]
+    return app.response_class(
+        response=json.dumps(names, ensure_ascii=False),
+        mimetype='application/json'
+    )
 
 @app.route('/items', methods=['POST'])
 def add_item():
