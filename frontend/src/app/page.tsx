@@ -9,8 +9,11 @@ import {
   Button,
   List,
   ListItem,
+  ListItemText,
   ListSubheader,
+  IconButton,
 } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { fetcher } from "../../hooks/fetcher";
 
 export default function Home() {
@@ -62,7 +65,16 @@ export default function Home() {
           }
         >
           {items?.map((item, index) => (
-            <ListItem key={index}>{item}</ListItem>
+            <ListItem
+              key={index}
+              secondaryAction={
+                <IconButton edge="end" aria-label="delete">
+                  <DeleteIcon />
+                </IconButton>
+              }
+            >
+              <ListItemText primary={item} />
+            </ListItem>
           ))}
         </List>
         <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
