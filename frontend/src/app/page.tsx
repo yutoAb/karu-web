@@ -4,6 +4,9 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListSubheader from '@mui/material/ListSubheader';
 
 export default function Home() {
   // type Item = {
@@ -49,11 +52,20 @@ export default function Home() {
         <Typography variant="h4" gutterBottom>
           Next.js + Flask + SQLite によるToDoアプリ
         </Typography>
-        <ul>
-          {items.map((item, index) => (
-            <li key={index}>{item}</li>
-          ))}
-        </ul>
+        <List
+          sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+          component="nav"
+          aria-labelledby="nested-list-subheader"
+          subheader={
+            <ListSubheader component="div" id="nested-list-subheader">
+              To Do リスト
+            </ListSubheader>
+          }
+        >
+            {items.map((item, index) => (
+              <ListItem  key={index}>{item}</ListItem >
+            ))}
+        </List>
         <TextField
           id="outlined-controlled"
           label="追加したいToDo"
