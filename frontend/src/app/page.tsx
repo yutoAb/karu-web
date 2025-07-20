@@ -23,8 +23,6 @@ export default function Home() {
     error,
   } = useSWR<string[]>("http://localhost:5000/items", fetcher);
 
-  console.log(items);
-
   const addItem = async () => {
     if (!newItem) return;
     await fetch("http://localhost:5000/items", {
