@@ -45,6 +45,15 @@ def add_item():
     db.session.commit()
     return jsonify(str(item)), 201
 
+@app.route('/items/<name>', methods=['DELETE'])
+def delete_item(name):
+    item = Item.query.filter_by(name=name).first()
+    if item:
+        db.session.delete(item)
+        db.session.commit()
+        return jsonify({"message": "Deleted"}), 200
+    return jsonify({"message": "Item not found"}), 404
+
 if __name__ == '__main__':
     # アプリケーションコンテキスト内で create_all を呼ぶ
     with app.app_context():
