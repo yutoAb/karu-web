@@ -14,6 +14,7 @@ import {
   IconButton,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import { fetcher } from "../../hooks/fetcher";
 
 type Item = {
@@ -80,13 +81,24 @@ export default function Home() {
             <ListItem
               key={index}
               secondaryAction={
-                <IconButton
-                  edge="end"
-                  aria-label="delete"
-                  onClick={() => deleteItem(item.id)}
-                >
-                  <DeleteIcon />
-                </IconButton>
+                <Stack direction="row" spacing={1}>
+                  <IconButton
+                    edge="end"
+                    aria-label="edit"
+                    onClick={() => {
+                      console.log(`編集: ${item.name}`);
+                    }}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => deleteItem(item.id)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </Stack>
               }
             >
               <ListItemText primary={item.name} />
