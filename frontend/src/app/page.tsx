@@ -38,23 +38,33 @@ export default function Home() {
   };
 
   return (
-    <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
-      <Typography variant="h2" gutterBottom>
-        Next.js + Flask + SQLite によるToDoアプリ
-      </Typography>
-      <ul>
-        {items.map((item, index) => (
-          <li key={index}>{item}</li>
-        ))}
-      </ul>
-      <TextField
-        id="outlined-controlled"
-        label="追加したいToDo"
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          setNewItem(event.target.value);
-        }}
-      />
-      <Button onClick={addItem}>To Do追加</Button>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Box sx={{ width: "60%", bgcolor: "background.paper" }}>
+        <Typography variant="h4" gutterBottom>
+          Next.js + Flask + SQLite によるToDoアプリ
+        </Typography>
+        <ul>
+          {items.map((item, index) => (
+            <li key={index}>{item}</li>
+          ))}
+        </ul>
+        <TextField
+          id="outlined-controlled"
+          label="追加したいToDo"
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            setNewItem(event.target.value);
+          }}
+        />
+        <Button variant="outlined" onClick={addItem}>
+          To Do追加
+        </Button>
+      </Box>
     </Box>
   );
 }
