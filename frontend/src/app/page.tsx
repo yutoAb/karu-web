@@ -1,5 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
 export default function Home() {
   // type Item = {
@@ -34,19 +38,23 @@ export default function Home() {
   };
 
   return (
-    <div>
-      <h1>Next.js + Flask + SQLite</h1>
+    <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
+      <Typography variant="h2" gutterBottom>
+        Next.js + Flask + SQLite によるToDoアプリ
+      </Typography>
       <ul>
         {items.map((item, index) => (
           <li key={index}>{item}</li>
         ))}
       </ul>
-      <input
-        type="text"
-        value={newItem}
-        onChange={(e) => setNewItem(e.target.value)}
+      <TextField
+        id="outlined-controlled"
+        label="追加したいToDo"
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          setNewItem(event.target.value);
+        }}
       />
-      <button onClick={addItem}>Add Item</button>
-    </div>
+      <Button onClick={addItem}>To Do追加</Button>
+    </Box>
   );
 }
